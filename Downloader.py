@@ -34,7 +34,7 @@ with open("./apikeys.key") as APIfp:
     retrieveTDAuthToken()
 
 
-def getSymbolsTD(arr: list, directory="data", freqType="minute", periodType="day", freq=1, endDate=None, daysBack=0, save=True,
+def getSymbolsTD(arr: list, directory="data", freqType="minute", periodType="day", freq=1, period=5, endDate=None, daysBack=0, save=True,
                  disableDelay=False, datedFileName=False):
     if endDate is None:
         # Calculate end time as now, or previous close if it is past close
@@ -69,11 +69,11 @@ def getSymbolsTD(arr: list, directory="data", freqType="minute", periodType="day
                              "periodType": periodType,
                              "frequencyType": freqType,
                              "frequency": freq,
-                            # In place of end start
-                             "period": 5
-                            #  "needExtendedHoursData": "true",
-                            #  "endDate": endDateStamp,
-                            #  "startDate": startDateStamp,
+                             # In place of end start
+                             "period": period
+                             #  "needExtendedHoursData": "true",
+                             #  "endDate": endDateStamp,
+                             #  "startDate": startDateStamp,
                          })
         if r.status_code == 200:
             try:
@@ -99,8 +99,9 @@ def getSymbolsTD(arr: list, directory="data", freqType="minute", periodType="day
     if not save:
         return res
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     df = pd.read_csv("fortune500.csv")
     syms = df['Symbol'].to_numpy()
     print(len(syms))
-    getSymbolsTD(syms,directory="./data_daily_5y",freqType="daily",periodType="year")
+    getSymbolsTD(syms, directory="./data_minutely_10d", freqType="minute", periodType="day", period=10)
