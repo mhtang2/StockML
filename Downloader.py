@@ -25,7 +25,7 @@ def retrieveTDAuthToken():
     TDAuthExpire = datetime.now() + timedelta(minutes=29)
 
 
-with open("apikeys.key") as APIfp:
+with open("./apikeys.key") as APIfp:
     obj = json.load(APIfp)
     financialKey = obj['financialAPI']
     TDConsumerKey = obj["TDConsumer"]
@@ -85,8 +85,9 @@ def getSymbolsTD(arr: list, directory="data", freqType="minute", periodType="day
                     df.to_csv(fileName, index=False)
                 else:
                     res[sym] = df
-            except:
+            except Exception as e:
                 print("Download Error ", sym)
+                print(e)
                 errors += 1
         else:
             print(f"Download Error {sym} \n {r.text}")
@@ -102,4 +103,4 @@ if __name__=='__main__':
     df = pd.read_csv("fortune500.csv")
     syms = df['Symbol'].to_numpy()
     print(len(syms))
-    getSymbolsTD(syms,directory="D:/stock_data",freqType="daily",periodType="year")
+    getSymbolsTD(syms,directory="./data_daily_5y",freqType="daily",periodType="year")
